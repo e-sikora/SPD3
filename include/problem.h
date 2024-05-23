@@ -26,6 +26,7 @@ class Problem
 private:
     int list_size;               /**< The size of the list. */
     int machine_amount;
+    std::vector<Item> main_list;
 
 public:
     /**

@@ -1,7 +1,7 @@
 #include "problem.h"
 
 template<class Item>
-Problem<Item>::Problem() : list_size(0), machine_amount(0) {}
+Problem<Item>::Problem() : list_size(0), machine_amount(0) , main_list(){}
 
 template<class Item>
 size_t Problem<Item>::getSize() { return list_size; }
@@ -18,23 +18,24 @@ void Problem<Item>::loadFromFile(const std::string &file_name) {
         exit(EXIT_FAILURE);
     }
 
-    // std::string temp;
+    std::string temp;
 
-    // if (!std::getline(input_file, temp)) {
-    //     std::cerr << "Plik " << file_name << " jest pusty!\n";
-    //     exit(EXIT_FAILURE);
-    // } else {
-    //     std::istringstream divide(temp);
-    //     if(!(divide >> list_size >> machine_amount)) {
-    //         std::cerr << "Dane zostały źle podzielone!\n";
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
+    if (!std::getline(input_file, temp)) {
+        std::cerr << "Plik " << file_name << " jest pusty!\n";
+        exit(EXIT_FAILURE);
+    } else {
+        std::istringstream divide(temp);
+        if(!(divide >> list_size >> machine_amount)) {
+            std::cerr << "Dane zostały źle podzielone!\n";
+            exit(EXIT_FAILURE);
+        }
+    }
 
-    // Item new_item;
-    // int counter = 0, o_time, w_time, i_time;
-    // while (std::getline(input_file, temp)) {
-    //     counter++;
+    Item new_item;
+    int counter = 0;
+    std::vector<int> w_time(0, machine_amount);
+    while (std::getline(input_file, temp)) {
+        counter++;
     //     std::istringstream divide(temp);
     //     if (divide >> o_time >> w_time >> i_time) {
     //         new_item = Item(counter, o_time, w_time, i_time);
@@ -43,11 +44,11 @@ void Problem<Item>::loadFromFile(const std::string &file_name) {
     //         exit(EXIT_FAILURE);
     //     }
     //     main_list.push_back(new_item);
-    // }
-    // if (counter != list_size) {
-    //     std::cerr << "Liczba wczytanych zadań nie zgadza się z zadeklarowaną ilośćią!\n";
-    //     exit(EXIT_FAILURE);
-    // }
+    }
+    if (counter != list_size) {
+        std::cerr << "Liczba wczytanych zadań nie zgadza się z zadeklarowaną ilośćią!\n";
+        exit(EXIT_FAILURE);
+    }
     input_file.close();
 }
 
