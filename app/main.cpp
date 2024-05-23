@@ -31,6 +31,10 @@ int main(int argc, char *argv[])
 
 
   problem.displayAll();
+
+  problem.workTime();
+
+  
   //Instance<Problem<Item<int>>> instance(problem.getMachines());
 
   //instance.timeMeasure([&]() { instance.LSA(problem); });

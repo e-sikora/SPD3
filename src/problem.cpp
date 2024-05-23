@@ -64,6 +64,28 @@ template<class Item>
 int Problem<Item>::workTime() {
     int total_work_time = 0;
 
+    std::vector<int> end_time(machine_amount, 0);
+    std::vector<int> previous_end_time(machine_amount, 0);
+
+    for(size_t i = 0; i < list_size; i++){
+        for(int j = 0; j < machine_amount; j++){
+            if(j != 0){
+                end_time[j] = main_list[i].getOneWorkTime(j) + std::max(previous_end_time[j], end_time[j-1]);
+            }
+            else{
+                end_time[j] = main_list[i].getOneWorkTime(j) + previous_end_time[j];
+            }
+        }
+
+    for(int disp : end_time){
+        std::cout << disp << " ";
+    }
+    std::cout << std::endl;
+    previous_end_time = end_time;
+    }
+
+
+
     return total_work_time;
 }
 

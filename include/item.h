@@ -51,6 +51,9 @@ public:
      */
     std::vector<int> getWorkTime() const { return work_time; }
 
+
+    int getOneWorkTime(int index) const { return work_time[index]; }
+
     /**
      * @brief Getter method for the idle time associated with the item.
      *
