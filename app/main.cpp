@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
   Problem<Item<int>> problem;
   problem.loadFromFile(argv[1]);
 
+
+  problem.displayAll();
   //Instance<Problem<Item<int>>> instance(problem.getMachines());
 
   //instance.timeMeasure([&]() { instance.LSA(problem); });

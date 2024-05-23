@@ -24,7 +24,7 @@ template <class Item>
 class Problem
 {
 private:
-    int list_size;               /**< The size of the list. */
+    size_t list_size;               /**< The size of the list. */
     int machine_amount;
     std::vector<Item> main_list;
 
@@ -79,4 +79,6 @@ public:
      * @brief Decrements the size of the main list.
      */
     void listSizeDecrement() { this->list_size--; }
+
+    void displayAll() const;
 };
