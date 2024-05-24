@@ -178,6 +178,8 @@ void Problem<Item>::NEHAlorithm(){
     std::vector<Item> helper = main_list;
     Item temporary_item;
 
+    std::sort(helper.begin(), helper.end(), [](const Item &a, const Item &b) { return b.compareByAllWorkTime(a); });
+
     main_list.clear();
     main_list.push_back(helper.front());
     helper.erase(helper.begin());

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <numeric>
 
 /**
  * @brief A class representing an item with attributes like ID, occurrence time,
@@ -51,6 +52,7 @@ public:
      */
     std::vector<int> getWorkTime() const { return work_time; }
 
+    int getSumWorkTime() const { return std::accumulate(work_time.begin(), work_time.end(), 0); }
 
     int getOneWorkTime(int index) const { return work_time[index]; }
 
@@ -73,6 +75,8 @@ public:
     bool compareByFirstWorkTime(const Item &other) const;
 
     bool compareBySecondWorkTime(const Item &other) const;
+
+    bool compareByAllWorkTime(const Item &other) const;
 };
 
 #ifdef ENABLE_DOCTEST_IN_LIBRARY

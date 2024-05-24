@@ -10,5 +10,10 @@ bool Item<T>::compareBySecondWorkTime(const Item& other) const {
     return work_time[1] < other.work_time[1];
 }
 
+template <class T>
+bool Item<T>::compareByAllWorkTime(const Item& other) const {
+    return this->getSumWorkTime() < other.getSumWorkTime();
+}
+
 
 template class Item<int>;
