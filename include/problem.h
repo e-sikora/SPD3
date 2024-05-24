@@ -81,4 +81,10 @@ public:
     void listSizeDecrement() { this->list_size--; }
 
     void displayAll() const;
+
+    void permutationSort();
+
+    void johnsonAlgorithm();
+
+    void NEHAlorithm();
 };

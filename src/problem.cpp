@@ -62,8 +62,6 @@ void Problem<Item>::loadFromFile(const std::string &file_name) {
 
 template<class Item>
 int Problem<Item>::workTime() {
-    int total_work_time = 0;
-
     std::vector<int> end_time(machine_amount, 0);
     std::vector<int> previous_end_time(machine_amount, 0);
 
@@ -76,17 +74,10 @@ int Problem<Item>::workTime() {
                 end_time[j] = main_list[i].getOneWorkTime(j) + previous_end_time[j];
             }
         }
-
-    for(int disp : end_time){
-        std::cout << disp << " ";
-    }
-    std::cout << std::endl;
     previous_end_time = end_time;
     }
 
-
-
-    return total_work_time;
+    return end_time.back();
 }
 
 template<class Item>
@@ -121,6 +112,102 @@ void Problem<Item>::displayAll() const {
         }
         std::cout << std::endl;
     }
+}
+
+template<class Item>
+void Problem<Item>::permutationSort(){
+    std::vector<Item> orginal = main_list;
+    int perm_work_time = 0;
+    int best_time;
+    std::vector<Item> best_order;
+    bool first_iteration = true;
+
+    do {
+        perm_work_time = this->workTime();
+        if (first_iteration == true) {
+            best_time = perm_work_time;
+            best_order.assign(main_list.begin(), main_list.end());
+            first_iteration = false;
+        }
+        if (perm_work_time < best_time) {
+            best_time = perm_work_time;
+            best_order.assign(main_list.begin(), main_list.end());
+        }
+
+    } while (std::next_permutation(main_list.begin(), main_list.end()));
+
+    std::cout << "-------------------------Full reviev-------------------------" << std::endl;
+    displayResult(best_order, best_time);
+
+    main_list = orginal;
+}
+
+template<class Item>
+void Problem<Item>::johnsonAlgorithm(){
+    std::vector<Item> orginal = main_list;
+    std::vector<Item> first_less, second_less;
+
+    while(!main_list.empty()){
+        if(main_list.front().getOneWorkTime(0) < main_list.front().getOneWorkTime(1)){
+            first_less.push_back(main_list.front());
+        }
+        else{
+            second_less.push_back(main_list.front());
+        }
+        main_list.erase(main_list.begin());
+    }
+
+    std::sort(first_less.begin(), first_less.end(), [](const Item &a, const Item &b) { return a.compareByFirstWorkTime(b); });
+    std::sort(second_less.begin(), second_less.end(), [](const Item &a, const Item &b) { return b.compareBySecondWorkTime(a); });
+
+    first_less.insert(first_less.end(), second_less.begin(), second_less.end());
+
+    main_list = first_less;
+
+    std::cout << "----------------------Johanson Algorithm---------------------" << std::endl;
+    displayResult(main_list, this->workTime());
+
+    main_list = orginal;
+}
+
+
+template<class Item>
+void Problem<Item>::NEHAlorithm(){
+    std::vector<Item> inside_helper, best_combination;
+    std::vector<Item> orginal = main_list;
+    std::vector<Item> helper = main_list;
+    Item temporary_item;
+
+    main_list.clear();
+    main_list.push_back(helper.front());
+    helper.erase(helper.begin());
+    best_combination = main_list;
+
+    for(size_t i = 1; i < list_size; i++){
+        temporary_item = helper.front();
+        helper.erase(helper.begin());
+        inside_helper = main_list;
+        main_list = best_combination;
+        int previous_work_time = 0;
+        for(size_t j = 0; j < main_list.size(); j++){
+            int work_time = 0;
+            main_list = inside_helper;
+            main_list.insert(main_list.begin() + j, temporary_item);
+            work_time = this->workTime();
+            if(previous_work_time == 0){ previous_work_time = work_time; }
+            if(work_time <= previous_work_time){
+                best_combination = main_list;
+                previous_work_time = work_time;
+            }
+        }
+    }
+
+    main_list = best_combination;
+
+    std::cout << "-------------------------NEH Algorithm-----------------------" << std::endl;
+    displayResult(main_list, this->workTime());
+
+    main_list = orginal;
 }
 
 template class Problem<Item<int>>;

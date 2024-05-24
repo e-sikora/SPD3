@@ -69,6 +69,10 @@ public:
      * @return false Otherwise.
      */
     bool operator<(const Item &other) const { return id < other.id; }
+
+    bool compareByFirstWorkTime(const Item &other) const;
+
+    bool compareBySecondWorkTime(const Item &other) const;
 };
 
 #ifdef ENABLE_DOCTEST_IN_LIBRARY

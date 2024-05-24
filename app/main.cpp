@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
   if (argc != 2)
   {
-    std::cout << "Błędne wywołanie programu! Program kończy działanie!" << std::endl;
+    std::cout << "Incorrect program invocation! The program terminates!" << std::endl;
     exit(EXIT_FAILURE);
   }
 
@@ -30,22 +30,13 @@ int main(int argc, char *argv[])
   problem.loadFromFile(argv[1]);
 
 
-  problem.displayAll();
+  //problem.displayAll();
 
-  problem.workTime();
-
-  
-  //Instance<Problem<Item<int>>> instance(problem.getMachines());
-
-  //instance.timeMeasure([&]() { instance.LSA(problem); });
-  //instance.timeMeasure([&]() { instance.LPT(problem); });
-  //instance.timeMeasure([&]() { instance.fullReview(problem, true); });
-  //instance.timeMeasure([&]() { instance.algorithmWrongPTAS(problem); });
-  // instance.timeMeasure([&]() { instance.algorithmPTAS(problem); });
-  // if(problem.getMachines()==2) {
-  //   instance.timeMeasure([&]() { instance.dynamicProgramingTwoMachines(problem, true, false); });
-  //   instance.timeMeasure([&]() { instance.algorithmFPTAS(problem); });
-  // }
+  //problem.timeMeasure([&]() { problem.permutationSort(); });
+  problem.timeMeasure([&]() { problem.NEHAlorithm(); });
+  if(problem.getMachines() == 2) {
+    problem.timeMeasure([&]() { problem.johnsonAlgorithm(); });
+  }
   
   return 0;
 }
