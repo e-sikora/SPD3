@@ -19,19 +19,8 @@ private:
     std::vector<int> work_time;
 
 public:
-    /**
-     * @brief Default constructor initializing all attributes to zero.
-     */
     Item() : id(0), work_time() {}
 
-    /**
-     * @brief Parameterized constructor to initialize the item with provided values.
-     *
-     * @param id_s The ID of the item.
-     * @param occur_time_s The occurrence time of the item.
-     * @param work_time_s The work time required for the item.
-     * @param idle_time_s The idle time associated with the item.
-     */
     Item(int id_s, std::vector<int> work_time_s)
     {
         id = id_s;
@@ -44,12 +33,7 @@ public:
      * @return int The ID of the item.
      */
     int getId() const { return id; }
-
-    /**
-     * @brief Getter method for the work time required for the item.
-     *
-     * @return int The work time required for the item.
-     */
+    
     std::vector<int> getWorkTime() const { return work_time; }
 
     int getSumWorkTime() const { return std::accumulate(work_time.begin(), work_time.end(), 0); }

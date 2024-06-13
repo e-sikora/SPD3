@@ -212,4 +212,92 @@ void Problem<Item>::NEHAlorithm(){
     main_list = orginal;
 }
 
+template<class Item>
+void Problem<Item>::FNEHAlorithm() {
+    std::vector<Item> orginal = main_list;
+    std::vector<Item> helper = main_list;
+
+    int front_value;
+    int back_value;
+
+    std::sort(helper.begin(), helper.end(), [](const Item &a, const Item &b) { return b.compareByAllWorkTime(a); });
+
+    main_list.clear();
+    main_list.push_back(helper.front());
+    helper.erase(helper.begin());
+
+    while(!helper.empty()){
+        std::vector<std::vector<int>> front(this->getMachines(), std::vector<int>(main_list.size()));
+        for (size_t i = 0; i < main_list.size(); i++) {
+            for (size_t j = 0; j < this->getMachines(); j++) {
+
+                if (j == 0 && i == 0) {
+                    front_value = main_list[i].getOneWorkTime(j);
+                } else if (j != 0 && i == 0) {
+                    front_value = main_list[i].getOneWorkTime(j) + front[j - 1][i];
+                } else if (j == 0 && i != 0) {
+                    front_value = main_list[i].getOneWorkTime(j) + front[j][i - 1];
+                } else {
+                    front_value = std::max(front[j][i - 1], front[j - 1][i]) + main_list[i].getOneWorkTime(j);
+                }
+
+                front[j][i] = front_value;
+            }
+        }
+
+        std::vector<std::vector<int>> back(this->getMachines(), std::vector<int>(main_list.size()));
+        for (int i = int(main_list.size()) - 1; i >= 0; i--) {
+            for (int j = int(this->getMachines()) - 1; j >= 0; j--) {
+                if (j == int(this->getMachines()) - 1 && i == int(main_list.size()) - 1) {
+                    back_value = main_list[i].getOneWorkTime(j);
+                } else if (j != int(this->getMachines()) - 1 && i == int(main_list.size()) - 1) {
+                    back_value = main_list[i].getOneWorkTime(j) + back[j + 1][i];
+                } else if (j == int(this->getMachines()) - 1 && i != int(main_list.size()) - 1) {
+                    back_value = main_list[i].getOneWorkTime(j) + back[j][i + 1];
+                } else {
+                    back_value = std::max(back[j][i + 1], back[j + 1][i]) + main_list[i].getOneWorkTime(j);
+                }
+                
+                back[j][i] = back_value;
+            }
+        }
+
+        std::vector<int> temp (this->getMachines());
+        std::vector<int> ans (this->getMachines());
+        std::vector<int> ans_tab;
+        Item top_item = helper.front();
+        helper.erase(helper.begin());
+
+        for(size_t i = 1; i <= main_list.size() + 1; i++){
+            for(size_t j = 0; j < temp.size(); j++){
+                if (j == 0 && i == 0) {
+                    temp[j] = top_item.getOneWorkTime(j);
+                } else if (j != 0 && i == 0) {
+                    temp[j] = top_item.getOneWorkTime(j) + temp[j - 1];
+                } else if (j == 0 && i != 0) {
+                    temp[j] = top_item.getOneWorkTime(j) + front[j][i - 1];
+                } else {
+                    temp[j] = std::max(front[j][i - 1], temp[j-1]) + top_item.getOneWorkTime(j);
+                } 
+            
+                ans[j] = temp[j] + back[j][i];
+            }
+
+            ans_tab.push_back(*std::max_element(ans.begin(), ans.end()));
+        }
+
+        auto min_iter = std::min_element(ans_tab.begin(), ans_tab.end());
+        int min_index = std::distance(ans_tab.begin(), min_iter);
+
+        main_list.insert(main_list.begin() + min_index, top_item);
+    }
+
+    std::cout << "------------------------FNEH Algorithm-----------------------" << std::endl;
+    displayResult(main_list, this->workTime());
+
+    main_list = orginal;
+}
+
+
+
 template class Problem<Item<int>>;

@@ -34,9 +34,10 @@ int main(int argc, char *argv[])
 
   //problem.timeMeasure([&]() { problem.permutationSort(); });
   problem.timeMeasure([&]() { problem.NEHAlorithm(); });
-  if(problem.getMachines() == 2) {
-    problem.timeMeasure([&]() { problem.johnsonAlgorithm(); });
-  }
+  problem.timeMeasure([&]() { problem.FNEHAlorithm(); });
+  // if(problem.getMachines() == 2) {
+  //   problem.timeMeasure([&]() { problem.johnsonAlgorithm(); });
+  // }
   
   return 0;
 }

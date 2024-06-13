@@ -87,4 +87,6 @@ public:
     void johnsonAlgorithm();
 
     void NEHAlorithm();
+
+    void FNEHAlorithm();
 };
