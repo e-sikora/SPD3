@@ -8,6 +8,7 @@
 #include <queue>
 #include <chrono>
 #include <functional>
+#include <list>
 
 #include "item.h"
 
@@ -89,4 +90,18 @@ public:
     void NEHAlorithm();
 
     void FNEHAlorithm();
+
+    double randomDouble(double, double);
+
+    int objectiveFunction(const std::vector<Item>&);
+
+    std::vector<Item> generateNeighbor(const std::vector<Item>&);
+
+    void simulatedAnnealing();
+
+    bool isTabu(const std::vector<Item>&, const std::list<std::vector<Item>>&);
+
+    void tabuSearch();
 };
+
+bool operator==(const std::vector<Item<int>>&, const std::vector<Item<int>>&);

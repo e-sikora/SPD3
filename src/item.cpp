@@ -15,5 +15,9 @@ bool Item<T>::compareByAllWorkTime(const Item& other) const {
     return this->getSumWorkTime() < other.getSumWorkTime();
 }
 
+template <class T>
+bool Item<T>::operator==(const Item &other) const {
+    return id == other.id && work_time == other.work_time;
+}
 
 template class Item<int>;

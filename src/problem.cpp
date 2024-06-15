@@ -298,6 +298,150 @@ void Problem<Item>::FNEHAlorithm() {
     main_list = orginal;
 }
 
+template<class Item>
+double Problem<Item>::randomDouble(double min, double max) {
+    return min + (double)rand() / RAND_MAX * (max - min);
+}
+
+template<class Item>
+int Problem<Item>::objectiveFunction(const std::vector<Item>& solution) {
+    std::vector<int> end_time(machine_amount, 0);
+    std::vector<int> previous_end_time(machine_amount, 0);
+
+    for(size_t i = 0; i < solution.size(); i++){
+        for(int j = 0; j < machine_amount; j++){
+            if(j != 0){
+                end_time[j] = solution[i].getOneWorkTime(j) + std::max(previous_end_time[j], end_time[j-1]);
+            }
+            else{
+                end_time[j] = solution[i].getOneWorkTime(j) + previous_end_time[j];
+            }
+        }
+    previous_end_time = end_time;
+    }
+
+    return end_time.back();
+}
+
+template<class Item>
+std::vector<Item> Problem<Item>::generateNeighbor(const std::vector<Item>& current_solution) {
+    std::vector<Item> new_solution = current_solution;
+    int i = rand() % new_solution.size();
+    int j = rand() % new_solution.size();
+    std::swap(new_solution[i], new_solution[j]);
+    return new_solution;
+}
+
+template<class Item>
+void Problem<Item>::simulatedAnnealing() {
+    std::vector<Item> orginal = main_list;
+    srand(time(NULL));
+    double temperature = 1000.0;
+    double cooling_rate = 0.003;
+    std::vector<Item> current_solution = main_list;
+    std::vector<Item> best_solution = current_solution;
+    
+    while (temperature > 1) {
+        std::vector<Item> new_solution = generateNeighbor(current_solution);
+        double current_energy = objectiveFunction(current_solution);
+        double neighbor_energy = objectiveFunction(new_solution);
+        
+        if (neighbor_energy < current_energy || exp((current_energy - neighbor_energy) / temperature) > randomDouble(0, 1)) {
+            current_solution = new_solution;
+        }
+        
+        if (objectiveFunction(current_solution) < objectiveFunction(best_solution)) {
+            best_solution = current_solution;
+        }
+        
+        temperature *= 1 - cooling_rate;
+    }
+    
+    main_list = best_solution;
+
+    std::cout << "----------------------Simulated Annealing--------------------" << std::endl;
+    displayResult(main_list, this->workTime());
+
+    main_list = orginal;
+}
+
+template<class Item>
+bool Problem<Item>::isTabu(const std::vector<Item>& solution, const std::list<std::vector<Item>>& tabu_list) {
+    for (const auto& tabu_solution : tabu_list) {
+        if (solution == tabu_solution) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool operator==(const std::vector<Item<int>>& lhs, const std::vector<Item<int>>& rhs) {
+    if (lhs.size() != rhs.size()) {
+        return false;
+    }
+    for (size_t i = 0; i < lhs.size(); ++i) {
+        if (!(lhs[i] == rhs[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template<class Item>
+void Problem<Item>::tabuSearch() {
+    std::vector<Item> orginal = main_list;
+    srand(time(NULL));
+    size_t tabu_tenure = 5;  // Długość listy tabu
+    std::list<std::vector<Item>> tabu_list;
+    std::vector<Item> current_solution = main_list;
+    std::vector<Item> best_solution = current_solution;
+    int iteration = 0;
+    int max_iterations = 100;  // Maksymalna liczba iteracji
+
+    while (iteration < max_iterations) {
+        std::vector<Item> best_neighbor;
+        double best_neighbor_cost = std::numeric_limits<double>::max();
+
+        // Generowanie sąsiednich rozwiązań
+        for (size_t i = 0; i < current_solution.size(); ++i) {
+            for (size_t j = i + 1; j < current_solution.size(); ++j) {
+                std::vector<Item> neighbor = current_solution;
+                std::swap(neighbor[i], neighbor[j]);
+                double neighbor_cost = objectiveFunction(neighbor);
+
+                // Wybór najlepszego sąsiedniego rozwiązania nie będącego na liście tabu
+                if (!isTabu(neighbor, tabu_list) && neighbor_cost < best_neighbor_cost) {
+                    best_neighbor = neighbor;
+                    best_neighbor_cost = neighbor_cost;
+                }
+            }
+        }
+
+        // Aktualizacja obecnego rozwiązania
+        current_solution = best_neighbor;
+
+        // Aktualizacja najlepszego znalezionego rozwiązania
+        if (objectiveFunction(current_solution) < objectiveFunction(best_solution)) {
+            best_solution = current_solution;
+        }
+
+        // Dodanie obecnego rozwiązania do listy tabu
+        tabu_list.push_back(current_solution);
+        if (tabu_list.size() > tabu_tenure) {
+            tabu_list.pop_front();
+        }
+
+        ++iteration;
+    }
+
+    main_list = best_solution;
+
+    std::cout << "--------------------------Tabu Search------------------------" << std::endl;
+    displayResult(main_list, this->workTime());
+
+    main_list = orginal;
+}
+
 
 
 template class Problem<Item<int>>;

@@ -61,6 +61,8 @@ public:
     bool compareBySecondWorkTime(const Item &other) const;
 
     bool compareByAllWorkTime(const Item &other) const;
+
+    bool operator==(const Item &other) const; 
 };
 
 #ifdef ENABLE_DOCTEST_IN_LIBRARY
