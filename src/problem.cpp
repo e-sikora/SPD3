@@ -391,25 +391,23 @@ template<class Item>
 void Problem<Item>::tabuSearch() {
     std::vector<Item> orginal = main_list;
     srand(time(NULL));
-    size_t tabu_tenure = 5;  // Długość listy tabu
+    size_t tabu_tenure = 5;
     std::list<std::vector<Item>> tabu_list;
     std::vector<Item> current_solution = main_list;
     std::vector<Item> best_solution = current_solution;
     int iteration = 0;
-    int max_iterations = 100;  // Maksymalna liczba iteracji
+    int max_iterations = 100;
 
     while (iteration < max_iterations) {
         std::vector<Item> best_neighbor;
         double best_neighbor_cost = std::numeric_limits<double>::max();
 
-        // Generowanie sąsiednich rozwiązań
         for (size_t i = 0; i < current_solution.size(); ++i) {
             for (size_t j = i + 1; j < current_solution.size(); ++j) {
                 std::vector<Item> neighbor = current_solution;
                 std::swap(neighbor[i], neighbor[j]);
                 double neighbor_cost = objectiveFunction(neighbor);
 
-                // Wybór najlepszego sąsiedniego rozwiązania nie będącego na liście tabu
                 if (!isTabu(neighbor, tabu_list) && neighbor_cost < best_neighbor_cost) {
                     best_neighbor = neighbor;
                     best_neighbor_cost = neighbor_cost;
@@ -417,15 +415,12 @@ void Problem<Item>::tabuSearch() {
             }
         }
 
-        // Aktualizacja obecnego rozwiązania
         current_solution = best_neighbor;
 
-        // Aktualizacja najlepszego znalezionego rozwiązania
         if (objectiveFunction(current_solution) < objectiveFunction(best_solution)) {
             best_solution = current_solution;
         }
 
-        // Dodanie obecnego rozwiązania do listy tabu
         tabu_list.push_back(current_solution);
         if (tabu_list.size() > tabu_tenure) {
             tabu_list.pop_front();
