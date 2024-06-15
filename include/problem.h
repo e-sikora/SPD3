@@ -103,9 +103,9 @@ public:
     void NEHAlgorithm();
 
     /**
-     * @brief Apply FNEH algorithm to the list of items.
+     * @brief Apply QNEH algorithm to the list of items.
      */
-    void FNEHAlgorithm();
+    void QNEHAlorithm();
 
     /**
      * @brief Generate a random double within a specified range.

@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   //problem.displayAll();
 
   //problem.timeMeasure([&]() { problem.permutationSort(); });
-  problem.timeMeasure([&]() { problem.NEHAlorithm(); });
-  problem.timeMeasure([&]() { problem.FNEHAlorithm(); });
+  problem.timeMeasure([&]() { problem.NEHAlgorithm(); });
+  problem.timeMeasure([&]() { problem.QNEHAlorithm(); });
   problem.timeMeasure([&]() { problem.simulatedAnnealing(); });
   problem.timeMeasure([&]() { problem.tabuSearch(); });
   // if(problem.getMachines() == 2) {

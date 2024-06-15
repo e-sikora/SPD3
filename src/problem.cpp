@@ -172,7 +172,7 @@ void Problem<Item>::johnsonAlgorithm(){
 
 
 template<class Item>
-void Problem<Item>::NEHAlorithm(){
+void Problem<Item>::NEHAlgorithm(){
     std::vector<Item> inside_helper, best_combination;
     std::vector<Item> orginal = main_list;
     std::vector<Item> helper = main_list;
@@ -213,7 +213,7 @@ void Problem<Item>::NEHAlorithm(){
 }
 
 template<class Item>
-void Problem<Item>::FNEHAlorithm() {
+void Problem<Item>::QNEHAlorithm() {
     std::vector<Item> orginal = main_list;
     std::vector<Item> helper = main_list;
 
