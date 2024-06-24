@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
   problem.timeMeasure([&]() { problem.QNEHAlorithm(); });
   problem.timeMeasure([&]() { problem.simulatedAnnealing(); });
   problem.timeMeasure([&]() { problem.tabuSearch(); });
-  // if(problem.getMachines() == 2) {
-  //   problem.timeMeasure([&]() { problem.johnsonAlgorithm(); });
-  // }
+  if(problem.getMachines() == 2) {
+    problem.timeMeasure([&]() { problem.johnsonAlgorithm(); });
+  }
   
   return 0;
 }

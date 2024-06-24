@@ -337,7 +337,7 @@ void Problem<Item>::simulatedAnnealing() {
     std::vector<Item> orginal = main_list;
     srand(time(NULL));
     double temperature = 1000.0;
-    double cooling_rate = 0.003;
+    double cooling_rate = 0.0008;
     std::vector<Item> current_solution = main_list;
     std::vector<Item> best_solution = current_solution;
     
@@ -396,7 +396,7 @@ void Problem<Item>::tabuSearch() {
     std::vector<Item> current_solution = main_list;
     std::vector<Item> best_solution = current_solution;
     int iteration = 0;
-    int max_iterations = 100;
+    int max_iterations = 5;
 
     while (iteration < max_iterations) {
         std::vector<Item> best_neighbor;
